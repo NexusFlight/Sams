@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Sams.Models;
 using Sams.Models.Dtos;
-using Sams.Models.DTOS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
