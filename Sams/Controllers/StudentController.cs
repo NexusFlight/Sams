@@ -1,8 +1,12 @@
 ﻿
+using AutoMapper;
+using AutoMapper.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Sams.Models;
+using Sams.Models.Contexts;
+using Sams.Models.DTOS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,42 +20,40 @@ namespace Sams.Controllers
     public class StudentController : ControllerBase
     {
         private readonly ILogger<StudentController> logger;
-        private readonly StudentContext sContext;
-        public StudentController(ILogger<StudentController> logger, StudentContext sContext)
+        private readonly SamsContext sContext;
+        private readonly IMapper mapper;
+        public StudentController(ILogger<StudentController> logger, SamsContext sContext, IMapper mapper)
         {
             this.logger = logger;
             this.sContext = sContext;
+            this.mapper = mapper;
         }
 
         [HttpGet]
-        public IEnumerable<Student> Get()
+        public IEnumerable<StudentsDto> Get()
         {
-            return sContext.Students
-                .Include(student => student.ContactPreferences)
-                .Include(student => student.ContactDetails)
-                .ThenInclude(contactDetails => contactDetails.Address);
+            var s = sContext.Students
+                .Include(s => s.StudentConvenors)
+                .ThenInclude(sc => sc.Convenor)
+                .ThenInclude(c => c.SocietyConvenors)
+                .ThenInclude(sc => sc.Society)
+                .Include(s => s.StudentSuggestions)
+                .ThenInclude(ss => ss.Suggestion)
+                .ToList();
+
+            return mapper.Map<List<StudentsDto>>(s);
         }
 
         [HttpPost]
-        public Student Create([FromBody]Student student)
+        public Students Create([FromBody] Students student)
         {
-            Console.WriteLine(student.StudentName);
-            var returned = sContext.Add(student);
-            sContext.SaveChanges();
-            return returned.Entity;
-            
+            throw new NotImplementedException();
         }
 
         [HttpDelete]
-        public IActionResult Remove([FromHeader]int id)
+        public IActionResult Remove([FromHeader] int id)
         {
-            var student = sContext.Students.Remove(sContext.Students.Find(id));
-            if(student.Entity != null)
-            {
-                sContext.SaveChanges();
-                return Ok();
-            }
-            return NotFound();
+            throw new NotImplementedException();
         }
     }
 }
