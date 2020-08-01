@@ -17,16 +17,23 @@ namespace Sams.Mappings
                 .ForMember(dto => dto.Engagements, opt => opt.MapFrom(x => x.StudentEngagements.Select(y => y.Engagement).ToList()))
                 .ForMember(dto => dto.Societies, opt => opt.MapFrom(x => x.StudentSocieties.Select(y => y.Society).ToList()))
                 .ForMember(dto => dto.Suggestions, opt => opt.MapFrom(x => x.StudentSuggestions.Select(y => y.Suggestion).ToList()));
+            CreateMap<StudentsDto, Students>();
             CreateMap<Convenors, ConvenorsDto>()
                 .ForMember(dto => dto.Societys, opt => opt.MapFrom(x => x.SocietyConvenors.Select(y => y.Society).ToList()))
                 .ForMember(dto => dto.Students, opt => opt.MapFrom(x => x.StudentConvenors.Select(y => y.Students).ToList()));
+            CreateMap<ConvenorsDto, Convenors>();
             CreateMap<Societys, SocietysDto>()
                 .ForMember(dto => dto.Convenors, opt => opt.MapFrom(x => x.SocietyConvenors.Select(y => y.Convenor).ToList()))
                 .ForMember(dto => dto.Students, opt => opt.MapFrom(x => x.StudentSocieties.Select(y => y.Students).ToList()));
+            CreateMap<SocietysDto, Societys>();
             CreateMap<Suggestions, SuggestionsDto>()
                 .ForMember(dto => dto.Students, opt => opt.MapFrom(x => x.StudentSuggestions.Select(y => y.Student).ToList()));
+            CreateMap<SuggestionsDto, Suggestions>();
             CreateMap<Engagements, EngagementsDto>()
                 .ForMember(dto => dto.Students, opt => opt.MapFrom(x => x.StudentEngagements.Select(y => y.Student).ToList()));
+            CreateMap<EngagementsDto, Engagements>();
+
+            CreateMap<StudentSocietyDto, StudentSociety>();
         }
     }
 }

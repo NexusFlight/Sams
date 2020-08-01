@@ -1,4 +1,5 @@
-﻿using Sams.Models.DTOS;
+﻿
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace Sams.Models.Dtos
         public string SuggestionDetails { get; set; }
         public string SuggestionHandlingAnonymity { get; set; }
         public DateTime SuggestionSubmissionDateTime { get; set; }
+
+        [JsonIgnore]
         public List<StudentsDto> Students { get; set; }
     }
 }

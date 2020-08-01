@@ -1,4 +1,5 @@
-﻿using Sams.Models.Dtos;
+﻿using Newtonsoft.Json;
+using Sams.Models.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,9 @@ namespace Sams.Models.Dtos
         public string SocietyName { get; set; }
         public string SocietyRunningTimes { get; set; }
 
+        [JsonIgnore]
         public List<ConvenorsDto> Convenors { get; set; }
+        [JsonIgnore]
         public List<StudentsDto> Students { get; set; }
 
     }

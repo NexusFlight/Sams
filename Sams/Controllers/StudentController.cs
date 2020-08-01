@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Sams.Models;
 using Sams.Models.Contexts;
-using Sams.Models.DTOS;
+using Sams.Models.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace Sams.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class StudentController : ControllerBase
     {
         private readonly ILogger<StudentController> logger;
@@ -37,6 +37,8 @@ namespace Sams.Controllers
                 .ThenInclude(sc => sc.Convenor)
                 .ThenInclude(c => c.SocietyConvenors)
                 .ThenInclude(sc => sc.Society)
+                .Include(s => s.StudentSocieties)
+                .ThenInclude(s=> s.Society)
                 .Include(s => s.StudentSuggestions)
                 .ThenInclude(ss => ss.Suggestion)
                 .ToList();
@@ -45,9 +47,12 @@ namespace Sams.Controllers
         }
 
         [HttpPost]
-        public Students Create([FromBody] Students student)
+        public StudentsDto Create([FromBody] StudentsDto studentDto)
         {
-            throw new NotImplementedException();
+            var student = mapper.Map<Students>(studentDto);
+            sContext.Students.Add(student);
+            sContext.SaveChanges();
+            return mapper.Map<StudentsDto>(student);
         }
 
         [HttpDelete]
